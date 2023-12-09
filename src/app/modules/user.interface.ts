@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+import { Model } from 'mongoose'
+
 export type UserName = {
   firstName: string
   lastName: string
@@ -26,4 +29,8 @@ export type User = {
   hobbies: string[]
   address: Address
   orders: Orders[]
+}
+
+export interface UserModels extends Model<User> {
+  isUserExists(id: number): Promise<User | null>
 }

@@ -7,7 +7,6 @@ import { userValidationSchema } from './user.validation'
 const createUser = async (req: Request, res: Response) => {
   try {
     // data validation using Zod
-
     const { user: userData } = req.body
     const zodParsedData = userValidationSchema.parse(userData)
 
@@ -22,11 +21,7 @@ const createUser = async (req: Request, res: Response) => {
     console.log(error)
     res.status(500).json({
       success: false,
-      message: 'Something went wrong',
-      error: {
-        code: 500,
-        description: error,
-      },
+      message: error.message || 'Something went wrong',
     })
   }
 }
