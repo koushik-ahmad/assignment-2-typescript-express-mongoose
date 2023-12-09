@@ -1,12 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express'
 import { userServices } from './user.services'
+import { userValidationSchema } from './user.validation'
 
 // create user
 const createUser = async (req: Request, res: Response) => {
   try {
+    // data validation using Zod
+
     const { user: userData } = req.body
-    const result = await userServices.createUserIntoDB(userData)
+    const zodParsedData = userValidationSchema.parse(userData)
+
+    const result = await userServices.createUserIntoDB(zodParsedData)
 
     res.status(200).json({
       success: true,
