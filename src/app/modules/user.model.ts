@@ -42,4 +42,4 @@ const userSchema = new Schema<User>({
   orders: { type: [ordersSchema] },
 })
 
-export const UserModel = model<User>('user', userSchema)
+export const UserModel = model<User>('User', userSchema)
