@@ -8,7 +8,7 @@ app.use(cors())
 app.use(express.json())
 
 // application routes
-app.use('/api/users', UserRoutes)
+app.use('/api', UserRoutes)
 
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
