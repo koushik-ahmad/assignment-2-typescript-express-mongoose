@@ -18,9 +18,9 @@ Follow these steps to get your project up and running:
 
 1. **Clone the repository:**
 
-   ```bash
-   git clone https://github.com/koushik-ahmad/assignment-2-typescript-express-mongoose.git
-   ```
+```bash
+git clone https://github.com/koushik-ahmad/assignment-2-typescript-express-mongoose.git
+```
 
 2. **Navigate to the project folder:**
 
