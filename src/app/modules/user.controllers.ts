@@ -22,6 +22,7 @@ const createUser = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: error.message || 'Something went wrong',
+      error: error,
     })
   }
 }
@@ -55,6 +56,17 @@ const getSingleUser = async (req: Request, res: Response) => {
     const userId = Number(req.params.userId)
     const result = await userServices.getSingleUserFromDB(userId)
 
+    if (!result) {
+      throw {
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      }
+    }
+
     res.status(200).json({
       success: true,
       message: 'User fetched successfully!',
@@ -73,8 +85,86 @@ const getSingleUser = async (req: Request, res: Response) => {
   }
 }
 
+// update single user
+const updateSingleUser = async (req: Request, res: Response) => {
+  try {
+    const userId = Number(req.params.userId)
+
+    const userData = req.body
+
+    const result = await userServices.updateUserFromDB(userId, userData)
+
+    if (!result) {
+      throw {
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      }
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'User updated successfully!',
+      data: result,
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      success: false,
+      message: 'Users not found',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
+    })
+  }
+}
+
+// delete user
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const userId = Number(req.params.userId)
+    const result = await userServices.deleteUserFromDB(userId)
+
+    if (!result) {
+      throw {
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      }
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'User deleted successfully!',
+      data: null,
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      success: false,
+      message: 'Users not found',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
+    })
+  }
+}
+
+
+
+
 export const UserControllers = {
   createUser,
   getAllUsers,
   getSingleUser,
+  updateSingleUser,
+  deleteUser,
 }

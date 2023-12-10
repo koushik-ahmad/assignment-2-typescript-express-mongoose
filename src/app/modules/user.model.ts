@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from 'mongoose'
 import { Address, Orders, User, UserModels, UserName } from './user.interface'
+import bcrypt from 'bcrypt'
+import config from '../config'
 
 const userNameSchema = new Schema<UserName>({
   firstName: { type: String, required: [true, 'FirstName is required'] },
@@ -42,10 +45,33 @@ const userSchema = new Schema<User>({
   orders: { type: [ordersSchema] },
 })
 
-// static method
-userSchema.statics.isUserExists = async function (userId: number) {
-  const existingUser = await UserModel.findOne({ userId });
-  return existingUser;
+// pre save middleware/ hook/ hashing password
+userSchema.pre('save', async function (next) {
+  const user = this
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  )
+  next()
+})
+
+// pre save middleware / hook
+userSchema.post('save', function (doc, next) {
+  doc.password = ''
+  next()
+})
+
+// removing password 
+userSchema.methods.toJSON = function () {
+  const userObject = this.toObject();
+  delete userObject.password;
+  return userObject;
 };
 
-export const UserModel = model<User , UserModels>('User', userSchema)
+// static method
+userSchema.statics.isUserExists = async function (userId: number) {
+  const existingUser = await UserModel.findOne({ userId })
+  return existingUser
+}
+
+export const UserModel = model<User, UserModels>('User', userSchema)
