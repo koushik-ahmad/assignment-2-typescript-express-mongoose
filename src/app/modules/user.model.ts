@@ -61,12 +61,12 @@ userSchema.post('save', function (doc, next) {
   next()
 })
 
-// removing password 
+// removing password
 userSchema.methods.toJSON = function () {
-  const userObject = this.toObject();
-  delete userObject.password;
-  return userObject;
-};
+  const userObject = this.toObject()
+  delete userObject.password
+  return userObject
+}
 
 // static method
 userSchema.statics.isUserExists = async function (userId: number) {
