@@ -28,7 +28,7 @@ export type User = {
   isActive: boolean
   hobbies: string[]
   address: Address
-  orders: Orders[]
+  orders?: Orders[]
 }
 
 export interface UserModels extends Model<User> {
