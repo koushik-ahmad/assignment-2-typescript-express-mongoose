@@ -20,7 +20,7 @@ export type Orders = {
 
 export type User = {
   userId: number
-  userName: string
+  username: string
   password: string
   fullName: UserName
   age: number
